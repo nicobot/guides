@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'middleman-spellcheck',:git => "https://github.com/mwils/middleman-spellcheck.git", :branch => 'class'
 gem "redcarpet"
 gem "activesupport", '~> 4.1.11'
 gem "highline"
@@ -11,8 +12,12 @@ gem "rack"
 gem "listen"
 gem "builder"
 gem "middleman-alias"
-gem "middleman-swiftype", :git => "https://github.com/LeonB/middleman-swiftype.git"
 gem "underscore-rails"
+gem "html-proofer"
+
+gem "normalize-scss"
+gem "bourbon"
+gem "neat"
 
 source 'https://rails-assets.org' do
   gem "rails-assets-js-md5"

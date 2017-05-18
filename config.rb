@@ -1,8 +1,11 @@
 require 'redcarpet'
 require 'active_support'
 require 'active_support/core_ext'
+require 'support-for'
 
 Dir['./lib/*'].each { |f| require f }
+
+ignore /[a-z]{2}-[A-Z]{2}$/
 
 # Debugging
 set(:logging, ENV['RACK_ENV'] != 'production')
@@ -10,6 +13,7 @@ set(:logging, ENV['RACK_ENV'] != 'production')
 activate :relative_assets
 set :relative_links, true
 
+activate :i18n, :langs => [:en]
 set :markdown_engine, :redcarpet
 set :markdown, :layout_engine => :erb,
          :fenced_code_blocks => true,
@@ -21,9 +25,6 @@ activate :toc
 activate :highlighter
 activate :alias
 
-###
-# Swiftype
-###
 def current_guide(mm_instance, current_page)
   path = current_page.path.gsub('.html', '')
   guide_path = path.split("/")[0]
@@ -49,18 +50,15 @@ def current_chapter(mm_instance, current_page)
   current_chapter
 end
 
-activate :swiftype do |swift|
-  swift.pages_selector = lambda { |p| p.path.match(/\.html/) && p.metadata[:options][:layout] == nil }
-  swift.title_selector = lambda { |mm_instance, p| return current_chapter(mm_instance, p) == nil ? "" : current_chapter(mm_instance, p).title }
-  swift.should_index = lambda { |p, title| return title.to_s == '' ? false : true }
-end
-
 ###
 # Build
 ###
 configure :build do
+  set :spellcheck_allow_file, "./data/spelling-exceptions.txt"
+  activate :spellcheck, ignore_selector: '.CodeRay', page: /^(?!.*stylesheets|.*javascript|.*fonts|.*images|.*analytics).*$/
   activate :minify_css
   activate :minify_javascript, ignore: /.*examples.*js/
+  activate :html_proofer
 end
 
 ###

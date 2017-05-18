@@ -37,7 +37,7 @@ describe TOC::Helpers do
     it "raises an exception if a file doesn't exist" do
       allow(File).to receive(:exist?).and_return(false)
       expect { toc }.to raise_error(RuntimeError,
-        /source\/middleman-basics\/index.md does not exist but is referenced in data\/guides.yml./)
+        /source\/localizable\/middleman-basics\/index.md does not exist but is referenced in data\/guides.yml./)
     end
 
     it "includes guide titles" do
@@ -157,7 +157,7 @@ describe TOC::Helpers do
     it "is link to the first chapter in next guide if next chapter is not specified" do
       allow(helper).to receive(:current_page).and_return(double(path: "middleman-basics/meh"))
 
-      expectation = "We're done with Middleman Basics. Next up: Secret stuff - Don't tell anybody"
+      expectation = "We've finished covering Middleman Basics. Next up: Secret stuff - Don't tell anybody"
       expect(helper.next_chapter_link).to include(expectation)
     end
   end
